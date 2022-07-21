@@ -20,54 +20,68 @@ function addBookToLibrary() {
 
 function displayBooks() {
     const books = document.querySelector(".books");
-    books.innerHTML = "";
+    removeBooks();
     myLibrary.forEach((book, index) => {
-      const bookContainer = document.createElement("div");
-      bookContainer.classList.add("book");
-      // bookContainer.dataset.index = index;s
-      
-      const title = document.createElement("div");
-      title.classList.add("title")
-      title.textContent = book.title;
+      const newBook = createBook(book, index);
 
-      const author = document.createElement("div");
-      author.classList.add("author");
-      author.textContent = "BY " + book.author;
-
-      const pages = document.createElement("div");
-      pages.classList.add("pages");
-      pages.textContent = "PAGES: " + book.pages;
-      //read unread button
-      const btnContainer = document.createElement("div");
-      btnContainer.classList.add("btnContainer");
-      const btn = document.createElement("button");
-      btn.classList.add("btn");
-      if (book.read) {
-        btn.textContent = "READ";
-        btn.classList.add("read");
-      }
-      else {
-        btn.textContent = "NOT READ";
-        btn.classList.add("unread");
-      }
-      btnContainer.appendChild(btn);
-      btn.id = "read";
-      btn.onclick = changeReadStatus;
-
-      //remove button
-      const btnContainer2 = document.createElement("div");
-      btnContainer2.classList.add("btnContainer");
-      const btn2 = document.createElement("button");
-      btn2.textContent = "REMOVE";
-      btn2.classList.add("btn");
-      btn2.id = "remove";
-      btn2.dataset.index = index;
-      btnContainer2.appendChild(btn2);
-      btn2.onclick = removeBook;
-
-      bookContainer.append(title, author, pages, btnContainer, btnContainer2);
-      books.appendChild(bookContainer);
+      books.appendChild(newBook);
     })
+}
+
+function removeBooks() {
+  const books = document.querySelectorAll(".book");
+  for (const book of books) {
+    book.remove();    
+  }
+}
+
+function createBook(book, index) {
+  const bookContainer = document.createElement("div");
+  bookContainer.classList.add("book");
+  // bookContainer.dataset.index = index;s
+  
+  const title = document.createElement("div");
+  title.classList.add("title")
+  title.textContent = book.title;
+
+  const author = document.createElement("div");
+  author.classList.add("author");
+  author.textContent = "BY " + book.author;
+
+  const pages = document.createElement("div");
+  pages.classList.add("pages");
+  pages.textContent = "PAGES: " + book.pages;
+  //read unread button
+  const btnContainer = document.createElement("div");
+  btnContainer.classList.add("btnContainer");
+  const btn = document.createElement("button");
+  btn.classList.add("btn");
+  if (book.read) {
+    btn.textContent = "READ";
+    btn.classList.add("read");
+  }
+  else {
+    btn.textContent = "NOT READ";
+    btn.classList.add("unread");
+  }
+  btn.dataset.index = index;
+  btnContainer.appendChild(btn);
+  btn.id = "read";
+  btn.onclick = changeReadStatus;
+
+  //remove button
+  const btnContainer2 = document.createElement("div");
+  btnContainer2.classList.add("btnContainer");
+  const btn2 = document.createElement("button");
+  btn2.textContent = "REMOVE";
+  btn2.classList.add("btn");
+  btn2.id = "remove";
+  btn2.dataset.index = index;
+  btnContainer2.appendChild(btn2);
+  btn2.onclick = removeBook;
+
+  bookContainer.append(title, author, pages, btnContainer, btnContainer2);
+  return bookContainer;
 }
 
 function hideForm() {
@@ -82,7 +96,6 @@ function hideForm() {
 } 
 
 function removeBook() {
-  console.log("testtt");
   myLibrary.splice(this.dataset.index, 1);
   displayBooks();
 }
@@ -92,11 +105,13 @@ function changeReadStatus() {
     this.classList.remove("unread");
     this.textContent = "READ";
     this.classList.add("read");
+    myLibrary[this.dataset.index].read = true; 
   }
   else {
     this.classList.remove("read");
     this.textContent = "NOT READ";
     this.classList.add("unread");
+    myLibrary[this.dataset.index].read = false;
   }
 }
 
