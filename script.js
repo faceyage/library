@@ -13,6 +13,10 @@ function addBookToLibrary() {
   const author = form.author.value;
   const title = form.title.value;
   const pages = form.pages.value;
+  if (author === "" || title === "" || pages == "") {
+    alert("You must fill all fields");
+    return;
+  }
   myLibrary.push(new Book(author, title, pages, false));
   clearInputs();
   hideForm();
