@@ -10,13 +10,16 @@
 </head>
 <body>
     <form action="" method="get" id="addBookForm" class="hide">
-        <input type="text" name="title" id="title" placeholder="title">
-        <input type="text" name="author" id="author" placeholder="author">
-        <input type="number" name="pages" id="pages" min="0" placeholder="pages">
-        <button type="button" class="btn" id="addBookBtn">Add Book</button>
+        <fieldset>
+            <legend>Add new book</legend>
+            <input type="text" name="title" id="title" placeholder="title">
+            <input type="text" name="author" id="author" placeholder="author">
+            <input type="number" name="pages" id="pages" min="0" placeholder="pages">
+            <button type="button" class="btn" id="addBookBtn">Add Book</button>
+        </fieldset>
     </form>
-    <div class="showBookForm">+</div>
     <div class="books">
+        <div class="showBookForm">+</div>
         <div class="book">
             <div class="title">WINTER</div>
             <div class="author">By MIA JACKSON</div>

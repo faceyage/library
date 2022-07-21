@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     font: inherit;
+    font-size: 1.3rem;
 }
 
 @font-face {
@@ -9,10 +10,21 @@
     src: url("Norse-Bold.otf");
 }
 
+:root {
+    --background-color: #111314;
+    --background-color2: rgb(16, 13, 13);
+    --text-color: white;
+    --shadow-color: gray;
+}
+
 body {
+    background-color: var(--background-color2);
+}
+
+.books {
     display: grid;
-    gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr))
 }
 .hide {
     display: none !important;
@@ -24,22 +36,31 @@ body {
     position: absolute;
     top: 50%;  
     left: 40%;
+    padding: 30px;
+    background-color: var(--shadow-color);
+    border-radius: 0.5rem;
+}
+#addBookForm > fieldset {
     display: flex;
     flex-direction: column;
     gap: 10px;
     align-items: center;
-    padding: 20px;
-    height: 150px;
-    width: 200px;
-    background-color: gray;
-    border-radius: 0.5rem;
 }
-
-#addBookForm > input {
+#addBookForm  input {
     border: none;
     border-radius: 0.5rem;
     padding: 5px;
-    color: white;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+#addBookForm fieldset {
+    border: none;
+}
+legend {
+    font-size: 1.4rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
 }
 
 /* showBookForm */
@@ -49,14 +70,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgb(29, 24, 24);
-    color: white;
-    /* width: 100px;
-    height: 100px; */
-
+    background-color: var(--background-color);
+    color: var(--text-color);
     font-size: 100px;
     font-weight: bold;
+    cursor: pointer;
+    box-shadow: 5px 5px 5px 0 var(--shadow-color);
+    min-height: 230px;
 }
+
 
 /* book card */
 
@@ -64,11 +86,9 @@ body {
     display: flex;
     gap: 5px;
     flex-direction: column;
-    background-color: rgb(48, 41, 41);
-    box-shadow: 0 0 10px 5px rgb(87, 77, 77);
+    background-color: var(--background-color);
+    box-shadow: 5px 5px 5px 0 var(--shadow-color);
     color: white;
-    /* width: 150px;
-    height: 200px; */
     padding: 10px 20px;
     font-family: "Norse Bold";
     border-radius: 0.1rem;
@@ -106,10 +126,13 @@ body {
 
 .btn {
     color: white;
-    background-color: black;
+    background-color: var(--background-color);
     border-radius: 0.5rem;
-    height: 35px;
-    width: 80px;
+}
+
+form .btn {
+    height: 50px;
+    width: 120px;
 }
 
 .read {
