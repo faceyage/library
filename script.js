@@ -14,6 +14,7 @@ function addBookToLibrary() {
   const title = form.title.value;
   const pages = form.pages.value;
   myLibrary.push(new Book(author, title, pages, false));
+  clearInputs();
   hideForm();
   displayBooks();
 }
@@ -91,9 +92,18 @@ function hideForm() {
   }
   else {
     addBookForm.classList.add("hide");
+    clearInputs();
   }
 
 } 
+
+function clearInputs() {
+  const form = document.querySelector("#addBookForm");
+  //clear inputs
+  form.author.value = "";
+  form.title.value = "";
+  form.pages.value = "";
+}
 
 function removeBook() {
   myLibrary.splice(this.dataset.index, 1);
