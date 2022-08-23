@@ -1,94 +1,128 @@
-let myLibrary = [];
-
-function Book(author, title, pages, read=false) {
+ 
+class Book {
   // the constructor...
-  this.author = author,
-  this.title = title,
-  this.pages = pages,
-  this.read = read
-}
-
-function addBookToLibrary() {
-  const form = document.querySelector("#addBookForm");
-  const author = form.author.value;
-  const title = form.title.value;
-  const pages = form.pages.value;
-  if (author === "" || title === "" || pages == "") {
-    alert("You must fill all fields");
-    return;
+  constructor(author, title, pages, read=false) {
+    this.author = author,
+    this.title = title,
+    this.pages = pages,
+    this.read = read
   }
-  myLibrary.push(new Book(author, title, pages, false));
-  clearInputs();
-  hideForm();
-  displayBooks();
 }
 
-function displayBooks() {
-    const books = document.querySelector(".books");
-    removeBooks();
-    myLibrary.forEach((book, index) => {
-      const newBook = createBook(book, index);
+class Library {
+  constructor(myLibrary = []) {
+    this.myLibrary = myLibrary;
+    this.displayBooks();
+  }
 
+  addBook() {
+    console.log(this.myLibrary)
+    const form = document.querySelector("#addBookForm");
+    const author = form.author.value;
+    const title = form.title.value;
+    const pages = form.pages.value;
+    if (author === "" || title === "" || pages == "") {
+      alert("You must fill all fields");
+      return;
+    }
+    this.myLibrary.push(new Book(author, title, pages, false));
+    clearInputs();
+    hideForm();
+    this.displayBooks();
+  }
+
+  createBookElement(book, index) {
+    const bookContainer = document.createElement("div");
+    bookContainer.classList.add("book");
+    // bookContainer.dataset.index = index;s
+    
+    const title = document.createElement("div");
+    title.classList.add("title")
+    title.textContent = book.title;
+  
+    const author = document.createElement("div");
+    author.classList.add("author");
+    author.textContent = "BY " + book.author;
+  
+    const pages = document.createElement("div");
+    pages.classList.add("pages");
+    pages.textContent = "PAGES: " + book.pages;
+    //read unread button
+    const btnContainer = document.createElement("div");
+    btnContainer.classList.add("btnContainer");
+    const readBtn = document.createElement("button");
+    readBtn.classList.add("btn");
+    if (book.read) {
+      readBtn.textContent = "READ";
+      readBtn.classList.add("read");
+    }
+    else {
+      readBtn.textContent = "NOT READ";
+      readBtn.classList.add("unread");
+    }
+    readBtn.dataset.index = index ;
+    btnContainer.appendChild(readBtn);
+    readBtn.id = "read";
+    readBtn.addEventListener("click", (e) => {this.changeReadStatus(e.target)});
+    // readBtn.onclick = (e) => {this.changeReadStatus(e)};
+  
+    //remove button
+    const btnContainer2 = document.createElement("div");
+    btnContainer2.classList.add("btnContainer");
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "REMOVE";
+    removeBtn.classList.add("btn");
+    removeBtn.id = "remove";
+    removeBtn.dataset.index = index;
+    btnContainer2.appendChild(removeBtn);
+    removeBtn.addEventListener("click", (e) => {this.removeBook(e.target)});
+  
+    bookContainer.append(title, author, pages, btnContainer, btnContainer2);
+    return bookContainer;
+  }
+  
+  displayBooks() {
+    const books = document.querySelector(".books");
+    this.removeBooks();
+    this.myLibrary.forEach((book, index) => {
+      const newBook = this.createBookElement(book, index);
       books.appendChild(newBook);
     })
-}
-
-function removeBooks() {
-  const books = document.querySelectorAll(".book");
-  for (const book of books) {
-    book.remove();    
   }
-}
-
-function createBook(book, index) {
-  const bookContainer = document.createElement("div");
-  bookContainer.classList.add("book");
-  // bookContainer.dataset.index = index;s
   
-  const title = document.createElement("div");
-  title.classList.add("title")
-  title.textContent = book.title;
-
-  const author = document.createElement("div");
-  author.classList.add("author");
-  author.textContent = "BY " + book.author;
-
-  const pages = document.createElement("div");
-  pages.classList.add("pages");
-  pages.textContent = "PAGES: " + book.pages;
-  //read unread button
-  const btnContainer = document.createElement("div");
-  btnContainer.classList.add("btnContainer");
-  const btn = document.createElement("button");
-  btn.classList.add("btn");
-  if (book.read) {
-    btn.textContent = "READ";
-    btn.classList.add("read");
+  removeBooks() {
+    const books = document.querySelectorAll(".book");
+    for (const book of books) {
+      book.remove();    
+    }
   }
-  else {
-    btn.textContent = "NOT READ";
-    btn.classList.add("unread");
+
+  removeBook(index) {
+    console.log(index);
+    this.myLibrary.splice(index, 1);
+    this.displayBooks();
   }
-  btn.dataset.index = index;
-  btnContainer.appendChild(btn);
-  btn.id = "read";
-  btn.onclick = changeReadStatus;
 
-  //remove button
-  const btnContainer2 = document.createElement("div");
-  btnContainer2.classList.add("btnContainer");
-  const btn2 = document.createElement("button");
-  btn2.textContent = "REMOVE";
-  btn2.classList.add("btn");
-  btn2.id = "remove";
-  btn2.dataset.index = index;
-  btnContainer2.appendChild(btn2);
-  btn2.onclick = removeBook;
-
-  bookContainer.append(title, author, pages, btnContainer, btnContainer2);
-  return bookContainer;
+  changeReadStatus(e) {
+    console.log("E:",e);
+    console.log("This:",this);
+    console.log("Library: ", this.myLibrary);
+    if (e.classList.contains("unread")) {
+      e.classList.remove("unread");
+      e.textContent = "READ";
+      e.classList.add("read");
+      this.myLibrary[e.dataset.index].read = true; 
+    }
+    else {
+      e.classList.remove("read");
+      e.textContent = "NOT READ";
+      e.classList.add("unread");
+      this.myLibrary[e.dataset.index].read = false;
+    }
+  }
 }
 
+//form edit
 function hideForm() {
   const addBookForm = document.querySelector("#addBookForm");
   if (addBookForm.classList.contains("hide")) {
@@ -109,26 +143,10 @@ function clearInputs() {
   form.pages.value = "";
 }
 
-function removeBook() {
-  myLibrary.splice(this.dataset.index, 1);
-  displayBooks();
-}
+const books = []
+books.push(new Book("George R. R. Martin", "Game Of Thrones", 847, false));
+books.push(new Book("Stephenie Meyer", "Twilight", 299, true));
+const library = new Library(books);
 
-function changeReadStatus() {
-  if (this.classList.contains("unread")) {
-    this.classList.remove("unread");
-    this.textContent = "READ";
-    this.classList.add("read");
-    myLibrary[this.dataset.index].read = true; 
-  }
-  else {
-    this.classList.remove("read");
-    this.textContent = "NOT READ";
-    this.classList.add("unread");
-    myLibrary[this.dataset.index].read = false;
-  }
-}
-
-document.querySelector("#addBookBtn").addEventListener("click", addBookToLibrary);
+document.querySelector("#addBookBtn").addEventListener("click", () => {library.addBook()});
 document.querySelector(".showBookForm").addEventListener("click", hideForm);
-// document.querySelector("#remove").addEventListener("click", removeBook);
