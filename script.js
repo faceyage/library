@@ -15,17 +15,11 @@ class Library {
     this.displayBooks();
   }
 
-  addBook() {
-    console.log(this.myLibrary)
-    const form = document.querySelector("#addBookForm");
-    const author = form.author.value;
-    const title = form.title.value;
-    const pages = form.pages.value;
-    if (author === "" || title === "" || pages == "") {
-      alert("You must fill all fields");
-      return;
-    }
-    this.myLibrary.push(new Book(author, title, pages, false));
+  addBook(form) {
+    const author = form.author;
+    const title = form.title;
+    const pages = form.pages;
+    this.myLibrary.push(new Book(author.value, title.value, pages.value, false));
     clearInputs();
     hideForm();
     this.displayBooks();
@@ -142,11 +136,34 @@ function clearInputs() {
   form.title.value = "";
   form.pages.value = "";
 }
+function startFormEvents() {
+  const form = document.querySelector("#addBookForm");
+  form.addEventListener("submit", (event) => {
+    library.addBook(form);
+    event.preventDefault();
+  });
 
-const books = []
+  const pages = form.pages;
+  //custom validation for page number
+  pages.addEventListener("input", () => {
+    pages.setCustomValidity("");
+    pages.checkValidity();
+  })
+
+  pages.addEventListener("invalid", () => {
+    if (pages.validity.rangeUnderflow) {
+      pages.setCustomValidity("Pages cannot be under 0!")
+    }
+    else {
+      pages.setCustomValidity("Pages cannot be empty!")
+    }
+  });
+}
+
+const books = [];
 books.push(new Book("George R. R. Martin", "Game Of Thrones", 847, false));
 books.push(new Book("Stephenie Meyer", "Twilight", 299, true));
 const library = new Library(books);
 
-document.querySelector("#addBookBtn").addEventListener("click", () => {library.addBook()});
 document.querySelector(".showBookForm").addEventListener("click", hideForm);
+startFormEvents();

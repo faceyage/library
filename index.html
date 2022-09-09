@@ -12,10 +12,10 @@
     <form action="" method="get" id="addBookForm" class="hide">
         <fieldset>
             <legend>Add new book</legend>
-            <input type="text" name="title" id="title" placeholder="title">
-            <input type="text" name="author" id="author" placeholder="author">
-            <input type="number" name="pages" id="pages" min="0" placeholder="pages">
-            <button type="button" class="btn" id="addBookBtn">Add Book</button>
+            <input type="text" name="title" id="title" placeholder="title" required>
+            <input type="text" name="author" id="author" placeholder="author" required>
+            <input type="number" name="pages" id="pages" min="0" placeholder="pages" required>
+            <button class="btn" id="addBookBtn">Add Book</button>
         </fieldset>
     </form>
     <div class="books">
